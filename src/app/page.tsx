@@ -7,11 +7,13 @@ import WaterConsumptionChart from "@/app/components/WaterConsumptionChart";
 import QuickActions from "@/app/components/QuickActions";
 import AlertsList from "@/app/components/AlertsList";
 import StatCard from "@/app/components/StatCard";
+import Protected from "@/components/Protected";
 
 // Importando os componentes (Next.js entende o alias @/ que aponta para src/)
 
 export default function Home() {
   return (
+      <Protected>
       <Layout style={{ minHeight: '100vh' }}>
         <MainHeader />
         <Layout.Content style={{ padding: '24px', backgroundColor: '#f0f5ff' }}>
@@ -72,5 +74,6 @@ export default function Home() {
           ©2023 Water Manager. Todos os direitos reservados.
         </Layout.Footer>
       </Layout>
+    </Protected>
   );
 }

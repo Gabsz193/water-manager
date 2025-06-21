@@ -3,7 +3,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import CadastroForm from "@/app/components/forms/CadastroForm";
 
-const LoginPage: React.FC = () => {
+const CadastroPage: React.FC = () => {
     return (
         <Row justify="center" align="middle" style={{ height: '100%', backgroundColor: '#f0f5ff' }}>
             <Col>
@@ -13,4 +13,4 @@ const LoginPage: React.FC = () => {
     );
 };
 
-export default LoginPage;
+export default CadastroPage;
