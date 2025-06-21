@@ -2,10 +2,9 @@
 "use client";
 
 import React from 'react';
-import LogoIcon from '/logo.svg'
 import {Layout, Avatar, Typography, Space, Dropdown, Flex} from 'antd';
 import type { MenuProps } from 'antd'; // Importar o tipo MenuProps
-import Icon, { UserOutlined, SettingOutlined, LogoutOutlined, CloudServerOutlined } from '@ant-design/icons';
+import { UserOutlined, SettingOutlined, LogoutOutlined, CloudServerOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 

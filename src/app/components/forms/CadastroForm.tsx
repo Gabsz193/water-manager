@@ -2,7 +2,7 @@
 "use client";
 
 import React from 'react';
-import {Card, Form, Input, Button, Typography, Space, Flex} from 'antd';
+import {Card, Form, Input, Button, Typography, Space } from 'antd';
 import {ArrowUpOutlined, MailOutlined, LockOutlined, UserOutlined} from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ const CadastroForm: React.FC = () => {
     const router = useRouter();
 
     // Função chamada quando o formulário é enviado com sucesso
-    const onFinish = (values: any) => {
+    const onFinish = (values: unknown) => {
         console.log('Dados recebidos do formulário:', values);
         // Aqui você faria a chamada para a sua API de autenticação.
         // Se a autenticação for bem-sucedida, redirecione o usuário.
