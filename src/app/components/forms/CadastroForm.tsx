@@ -1,29 +1,60 @@
 // src/components/forms/CadastroForm.tsx
 "use client";
 
-import React from 'react';
-import {Card, Form, Input, Button, Typography, Space } from 'antd';
+import React, { useState } from 'react';
+import {Card, Form, Input, Button, Typography, Space, message } from 'antd';
 import {ArrowUpOutlined, MailOutlined, LockOutlined, UserOutlined} from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 const { Title, Text } = Typography;
 
 const CadastroForm: React.FC = () => {
     // Hook de roteamento do Next.js para navegar após o cadastro
     const router = useRouter();
+    const auth = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
     // Função chamada quando o formulário é enviado com sucesso
-    const onFinish = (values: unknown) => {
-        console.log('Dados recebidos do formulário:', values);
-        // Aqui você faria a chamada para a sua API de autenticação.
-        // Se a autenticação for bem-sucedida, redirecione o usuário.
-        alert('Cadastro simulado com sucesso! Redirecionando...');
-        router.push('/'); // Redireciona para a página do dashboard
+    const onFinish = async (values: any) => {
+        if (values.password !== values.password_confirmacao) {
+            messageApi.error('As senhas não coincidem');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await auth.signUp(values.email, values.password);
+            messageApi.success('Conta criada com sucesso!');
+            router.push('/');
+        } catch (error: any) {
+            let errorMessage = 'Erro ao criar conta. Tente novamente.';
+
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    errorMessage = 'Este email já está em uso';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Email inválido';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'A senha é muito fraca';
+                    break;
+                default:
+                    console.error('Erro ao criar conta:', error);
+            }
+
+            messageApi.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <Card style={{ width: 400, borderRadius: '16px', padding: '16px' }}>
+            {contextHolder}
             <Space direction="vertical" align="center" style={{ width: '100%', marginBottom: '24px' }}>
                 <div style={{
                     backgroundColor: '#1890ff',
@@ -89,8 +120,14 @@ const CadastroForm: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item style={{ marginBottom: '8px' }}>
-                    <Button type="primary" htmlType="submit" block size="large">
-                        Cadastrar
+                    <Button 
+                        type="primary" 
+                        htmlType="submit" 
+                        block 
+                        size="large"
+                        loading={loading}
+                    >
+                        {loading ? 'Cadastrando...' : 'Cadastrar'}
                     </Button>
                 </Form.Item>
 

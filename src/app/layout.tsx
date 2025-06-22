@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "@/lib/AntdRegistry"; // Importe o Registry
 import 'antd/dist/reset.css'; // Importa o CSS reset do antd
 import "./globals.css";
+import {AuthProvider} from "@/context/AuthContext";
 // import { initializeApp } from "firebase/app"; // Import the functions you need from the SDKs you need
 // import { getAnalytics } from "firebase/analytics";
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -42,8 +43,10 @@ export default function RootLayout({
     return (
         <html lang="pt-br">
         <body className={inter.className}>
-        {/* Envolva o conteúdo com o Registry */}
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            <AuthProvider>
+                {/* Envolva o conteúdo com o Registry */}
+                <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            </AuthProvider>
         </body>
         </html>
     );

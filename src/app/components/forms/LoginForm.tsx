@@ -1,29 +1,67 @@
 // src/components/forms/LoginForm.tsx
 "use client";
 
-import React from 'react';
-import {Card, Form, Input, Button, Typography, Space } from 'antd';
+import React, {useState} from 'react';
+import {Card, Form, Input, Button, Typography, Space, message} from 'antd';
 import { ArrowUpOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import {useAuth} from "@/context/AuthContext";
+import {LoginFormInput} from "@/types/login";
 
 const { Title, Text } = Typography;
 
 const LoginForm: React.FC = () => {
     // Hook de roteamento do Next.js para navegar após o login
     const router = useRouter();
+    const auth = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
-    // Função chamada quando o formulário é enviado com sucesso
-    const onFinish = (values: unknown) => {
-        console.log('Dados recebidos do formulário:', values);
-        // Aqui você faria a chamada para a sua API de autenticação.
-        // Se a autenticação for bem-sucedida, redirecione o usuário.
-        alert('Login simulado com sucesso! Redirecionando...');
-        router.push('/'); // Redireciona para a página do dashboard
+    const onFinish = async (values: LoginFormInput) => {
+        setLoading(true);
+        try {
+            await auth.signIn(values.email, values.password);
+            messageApi.success('Login realizado com sucesso');
+
+            // Verificar se há um parâmetro redirectTo na URL
+            const params = new URLSearchParams(window.location.search);
+            const redirectTo = params.get('redirectTo') || '/';
+
+            router.push(redirectTo);
+        } catch (error: any) {
+            let errorMessage = 'Erro ao fazer login. Tente novamente.';
+
+            switch (error.code) {
+                case 'auth/invalid-credential':
+                    errorMessage = 'Email ou senha incorretos';
+                    break;
+                case 'auth/user-not-found':
+                    errorMessage = 'Usuário não encontrado';
+                    break;
+                case 'auth/wrong-password':
+                    errorMessage = 'Senha incorreta';
+                    break;
+                case 'auth/too-many-requests':
+                    errorMessage = 'Muitas tentativas. Tente novamente mais tarde';
+                    break;
+                case 'auth/user-disabled':
+                    errorMessage = 'Esta conta foi desativada';
+                    break;
+                default:
+                    console.error('Erro de autenticação:', error);
+            }
+
+            messageApi.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <Card style={{ width: 400, borderRadius: '16px', padding: '16px' }}>
+            {contextHolder}
             <Space direction="vertical" align="center" style={{ width: '100%', marginBottom: '24px' }}>
                 <div style={{
                     backgroundColor: '#1890ff',
@@ -50,6 +88,7 @@ const LoginForm: React.FC = () => {
                 <Form.Item
                     name="email"
                     label="Email"
+                    validateDebounce={1000}
                     rules={[
                         { required: true, message: 'Por favor, insira seu email!' },
                         { type: 'email', message: 'O email inserido não é válido!' }
@@ -69,9 +108,16 @@ const LoginForm: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item style={{ marginBottom: '8px' }}>
-                    <Button type="primary" htmlType="submit" block size="large">
-                        Entrar
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        block
+                        size="large"
+                        loading={loading}
+                    >
+                        {loading ? 'Entrando...' : 'Entrar'}
                     </Button>
+
                 </Form.Item>
 
                 <div style={{ textAlign: 'center' }}>

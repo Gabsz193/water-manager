@@ -1,29 +1,55 @@
 // src/components/forms/RecuperaSenhaForm.tsx
 "use client";
 
-import React from 'react';
-import {Card, Form, Input, Button, Typography, Space } from 'antd';
+import React, { useState } from 'react';
+import {Card, Form, Input, Button, Typography, Space, message } from 'antd';
 import { ArrowUpOutlined, MailOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 const { Title, Text } = Typography;
 
 const RecuperaSenhaForm: React.FC = () => {
     // Hook de roteamento do Next.js para navegar após o login
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+    const auth = getAuth();
 
     // Função chamada quando o formulário é enviado com sucesso
-    const onFinish = (values: unknown) => {
-        console.log('Dados recebidos do formulário:', values);
-        // Aqui você faria a chamada para a sua API de autenticação.
-        // Se a autenticação for bem-sucedida, redirecione o usuário.
-        alert('Login simulado com sucesso! Redirecionando...');
-        router.push('/'); // Redireciona para a página do dashboard
+    const onFinish = async (values: { email: string }) => {
+        setLoading(true);
+        try {
+            await sendPasswordResetEmail(auth, values.email);
+            messageApi.success('Email de recuperação enviado com sucesso!');
+            // Dar um tempo para o usuário ler a mensagem antes de redirecionar
+            setTimeout(() => {
+                router.push('/login');
+            }, 2000);
+        } catch (error: any) {
+            let errorMessage = 'Erro ao enviar email de recuperação';
+
+            switch (error.code) {
+                case 'auth/invalid-email':
+                    errorMessage = 'Email inválido';
+                    break;
+                case 'auth/user-not-found':
+                    errorMessage = 'Não existe conta com este email';
+                    break;
+                default:
+                    console.error('Erro ao recuperar senha:', error);
+            }
+
+            messageApi.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <Card style={{ width: 400, borderRadius: '16px', padding: '16px' }}>
+            {contextHolder}
             <Space direction="vertical" align="center" style={{ width: '100%', marginBottom: '24px' }}>
                 <div style={{
                     backgroundColor: '#1890ff',
@@ -59,8 +85,14 @@ const RecuperaSenhaForm: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item style={{ marginBottom: '8px' }}>
-                    <Button type="primary" htmlType="submit" block size="large">
-                        Enviar Link de Recuperação
+                    <Button 
+                        type="primary" 
+                        htmlType="submit" 
+                        block 
+                        size="large"
+                        loading={loading}
+                    >
+                        {loading ? 'Enviando...' : 'Enviar Link de Recuperação'}
                     </Button>
                 </Form.Item>
 
