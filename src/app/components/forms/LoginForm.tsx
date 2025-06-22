@@ -7,7 +7,7 @@ import { ArrowUpOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {useAuth} from "@/context/AuthContext";
-import {LoginFormInput} from "@/types/login";
+import {LoginFormInput} from "@/types/auth";
 
 const { Title, Text } = Typography;
 
@@ -29,10 +29,11 @@ const LoginForm: React.FC = () => {
             const redirectTo = params.get('redirectTo') || '/';
 
             router.push(redirectTo);
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const error1 = error as { code: string };
             let errorMessage = 'Erro ao fazer login. Tente novamente.';
 
-            switch (error.code) {
+            switch (error1.code) {
                 case 'auth/invalid-credential':
                     errorMessage = 'Email ou senha incorretos';
                     break;

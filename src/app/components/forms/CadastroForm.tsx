@@ -7,6 +7,7 @@ import {ArrowUpOutlined, MailOutlined, LockOutlined, UserOutlined} from '@ant-de
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import {CadastroFormInput} from "@/types/auth";
 
 const { Title, Text } = Typography;
 
@@ -18,7 +19,7 @@ const CadastroForm: React.FC = () => {
     const [messageApi, contextHolder] = message.useMessage();
 
     // Função chamada quando o formulário é enviado com sucesso
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: CadastroFormInput) => {
         if (values.password !== values.password_confirmacao) {
             messageApi.error('As senhas não coincidem');
             return;
@@ -29,10 +30,11 @@ const CadastroForm: React.FC = () => {
             await auth.signUp(values.email, values.password);
             messageApi.success('Conta criada com sucesso!');
             router.push('/');
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const error1 = error as { code: string };
             let errorMessage = 'Erro ao criar conta. Tente novamente.';
 
-            switch (error.code) {
+            switch (error1.code) {
                 case 'auth/email-already-in-use':
                     errorMessage = 'Este email já está em uso';
                     break;

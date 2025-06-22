@@ -27,10 +27,11 @@ const RecuperaSenhaForm: React.FC = () => {
             setTimeout(() => {
                 router.push('/login');
             }, 2000);
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const error1 = error as { code: string };
             let errorMessage = 'Erro ao enviar email de recuperação';
 
-            switch (error.code) {
+            switch (error1.code) {
                 case 'auth/invalid-email':
                     errorMessage = 'Email inválido';
                     break;
