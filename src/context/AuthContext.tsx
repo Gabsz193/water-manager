@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 import {initializeApp} from 'firebase/app';
 
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyASmu_gTNRivhbXjllHCsDoIu7soKe49EQ",
     authDomain: "watermanager-763a0.firebaseapp.com",
     databaseURL: "https://watermanager-763a0-default-rtdb.firebaseio.com",
@@ -23,7 +23,7 @@ const firebaseConfig = {
     measurementId: "G-9B8GHKR17N"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 type AuthContextType = {

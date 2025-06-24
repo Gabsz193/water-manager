@@ -1,12 +1,21 @@
 // src/app/page.tsx
 "use client";
 import { Row, Col, Typography, Layout } from 'antd';
-import { DashboardOutlined, DollarCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import {
+  CloudOutlined,
+  DashboardOutlined,
+  DollarCircleOutlined,
+  FireOutlined,
+  ThunderboltOutlined
+} from '@ant-design/icons';
 import MainHeader from "@/app/components/MainHeader";
 import WaterConsumptionChart from "@/app/components/WaterConsumptionChart";
 import QuickActions from "@/app/components/QuickActions";
 import AlertsList from "@/app/components/AlertsList";
 import StatCard from "@/app/components/StatCard";
+import FirebaseStatCard from "@/app/components/FirebaseStatCard";
+import {IoWater} from "react-icons/io5";
+import {WiThermometer} from "react-icons/wi";
 
 // Importando os componentes (Next.js entende o alias @/ que aponta para src/)
 
@@ -24,33 +33,33 @@ export default function Home() {
 
             <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
               <Col xs={24} sm={24} md={8}>
-                <StatCard
-                    icon={<DashboardOutlined />}
-                    title="Consumo Atual"
-                    value="2.450 litros"
-                    changeText="3% menor que ontem"
-                    changeType="down"
-                    color="#1890ff"
+                <FirebaseStatCard
+                    title="Ph"
+                    icon={<IoWater />}
+                    keyName="ph"
+                    changeText="No change"
+                    changeType="up"
+                    color="#fa541c"
                 />
               </Col>
               <Col xs={24} sm={24} md={8}>
-                <StatCard
-                    icon={<DollarCircleOutlined />}
-                    title="Economia Mensal"
-                    value="15.320 litros"
-                    changeText="12% acima da meta"
+                <FirebaseStatCard
+                    title="Temperatura"
+                    icon={<WiThermometer />}
+                    keyName="valortemperatura"
+                    changeText="No change"
                     changeType="up"
-                    color="#52c41a"
+                    color="#fa541c"
                 />
               </Col>
               <Col xs={24} sm={24} md={8}>
-                <StatCard
-                    icon={<ThunderboltOutlined />}
-                    title="Eficiência do Sistema"
-                    value="92%"
-                    changeText="2% melhor que o mês anterior"
+                <FirebaseStatCard
+                    title="Bomba"
+                    icon={<FireOutlined />}
+                    keyName="bomba"
+                    changeText="No change"
                     changeType="up"
-                    color="#722ed1"
+                    color="#fa541c"
                 />
               </Col>
             </Row>
