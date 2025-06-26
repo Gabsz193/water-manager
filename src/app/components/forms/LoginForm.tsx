@@ -2,14 +2,15 @@
 "use client";
 
 import React, {useState} from 'react';
-import {Card, Form, Input, Button, Typography, Space, message} from 'antd';
-import { ArrowUpOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import {Card, Form, Input, Button, Typography, Space, message } from 'antd';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {useAuth} from "@/context/AuthContext";
 import {LoginFormInput} from "@/types/auth";
+import Image from "next/image";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const LoginForm: React.FC = () => {
     // Hook de roteamento do Next.js para navegar após o login
@@ -65,18 +66,15 @@ const LoginForm: React.FC = () => {
             {contextHolder}
             <Space direction="vertical" align="center" style={{ width: '100%', marginBottom: '24px' }}>
                 <div style={{
-                    backgroundColor: '#1890ff',
                     borderRadius: '50%',
                     padding: '12px',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <ArrowUpOutlined style={{ fontSize: '24px', color: 'white' }} />
+                    <Image width={122} height={112
+                    } src={"/images/water-manager-logo.svg"} alt={"Water Manager"} />
                 </div>
-                <Title level={2} style={{ color: '#1890ff', marginBottom: 0 }}>
-                    Water Manager
-                </Title>
                 <Text type="secondary">Gestão Hídrica Inteligente para Edificações</Text>
             </Space>
 

@@ -1,21 +1,13 @@
 // src/app/page.tsx
 "use client";
 import { Row, Col, Typography, Layout } from 'antd';
-import {
-  CloudOutlined,
-  DashboardOutlined,
-  DollarCircleOutlined,
-  FireOutlined,
-  ThunderboltOutlined
-} from '@ant-design/icons';
 import MainHeader from "@/app/components/MainHeader";
 import WaterConsumptionChart from "@/app/components/WaterConsumptionChart";
-import QuickActions from "@/app/components/QuickActions";
 import AlertsList from "@/app/components/AlertsList";
-import StatCard from "@/app/components/StatCard";
 import FirebaseStatCard from "@/app/components/FirebaseStatCard";
 import {IoWater} from "react-icons/io5";
 import {WiThermometer} from "react-icons/wi";
+import {FaWater} from "react-icons/fa6";
 
 // Importando os componentes (Next.js entende o alias @/ que aponta para src/)
 
@@ -34,31 +26,26 @@ export default function Home() {
             <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
               <Col xs={24} sm={24} md={8}>
                 <FirebaseStatCard
-                    title="Ph"
-                    icon={<IoWater />}
-                    keyName="ph"
-                    changeText="No change"
-                    changeType="up"
+                    title="Valor de Ph"
+                    icon={<FaWater />}
+                    precision={2}
+                    keyName="valorph"
                     color="#fa541c"
                 />
               </Col>
               <Col xs={24} sm={24} md={8}>
                 <FirebaseStatCard
-                    title="Temperatura"
+                    title="Valor de Temperatura"
                     icon={<WiThermometer />}
                     keyName="valortemperatura"
-                    changeText="No change"
-                    changeType="up"
                     color="#fa541c"
                 />
               </Col>
               <Col xs={24} sm={24} md={8}>
                 <FirebaseStatCard
-                    title="Bomba"
-                    icon={<FireOutlined />}
+                    title="Status da Bomba"
+                    icon={<IoWater />}
                     keyName="bomba"
-                    changeText="No change"
-                    changeType="up"
                     color="#fa541c"
                 />
               </Col>
@@ -72,13 +59,10 @@ export default function Home() {
                 <AlertsList />
               </Col>
             </Row>
-
-            <QuickActions />
-
           </div>
         </Layout.Content>
         <Layout.Footer style={{ textAlign: 'center', backgroundColor: '#f0f5ff' }}>
-          ©2023 Water Manager. Todos os direitos reservados.
+          ©2025 Water Manager. Todos os direitos reservados.
         </Layout.Footer>
       </Layout>
   );

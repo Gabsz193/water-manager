@@ -13,7 +13,6 @@ export const useMonitoramentoValue = (key: string): string | number | null => {
 
         return onValue(valueRef, (snapshot) => {
             const data = snapshot.val();
-            console.log(data);
             setValue(data);
         });
     }, [key]);

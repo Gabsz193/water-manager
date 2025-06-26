@@ -4,11 +4,12 @@
 import React, {useState} from 'react';
 import {Layout, Avatar, Typography, Space, Dropdown, Flex, message} from 'antd';
 import type { MenuProps } from 'antd'; // Importar o tipo MenuProps
-import { UserOutlined, SettingOutlined, LogoutOutlined, CloudServerOutlined } from '@ant-design/icons';
+import { UserOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons';
 import {useAuth} from "@/context/AuthContext";
 import {useRouter} from "next/navigation";
+import Image from "next/image";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const MainHeader: React.FC = () => {
     const { user, logout } = useAuth();
@@ -62,10 +63,7 @@ const MainHeader: React.FC = () => {
     return (
         <Layout.Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'white', borderBottom: '1px solid #f0f0f0' }}>
             <Space align="center">
-                <CloudServerOutlined style={{ fontSize: '28px', color: '#1890ff' }} />
-                <Title level={4} style={{ marginBottom: 0, marginLeft: 8 }}>
-                    Water Manager
-                </Title>
+                <Image width={57.95} height={53.2} src={"/images/water-manager-logo.svg"} alt={"Water Manager"} />
             </Space>
             {contextHolder}
             {/* MUDANÇA 2: Trocar 'overlay' por 'menu' e passar o array de itens */}
@@ -73,10 +71,7 @@ const MainHeader: React.FC = () => {
                 <Space style={{ cursor: loading ? 'wait' : 'pointer' }}>
                     <Avatar icon={<UserOutlined />} />
                     <Flex vertical>
-                        <Text strong>{user?.displayName || 'Usuário'}</Text>
-                        <Text type="secondary" style={{fontSize: '12px'}}>
-                            {user?.email || 'usuario@demo.com'}
-                        </Text>
+                        <Text strong>{user?.email || 'usuario@demo.com'}</Text>
                     </Flex>
                 </Space>
             </Dropdown>

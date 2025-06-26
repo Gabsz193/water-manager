@@ -8,8 +8,8 @@ interface FirebaseStatCardProps {
     keyName: string; // Key from "monitoramento" (e.g., "bomba", "ph", etc.)
     precision?: number;
     suffix?: string;
-    changeText: string;
-    changeType: 'up' | 'down';
+    changeText?: string;
+    changeType?: 'up' | 'down';
     color: string;
 }
 
@@ -20,7 +20,7 @@ const FirebaseStatCard: React.FC<FirebaseStatCardProps> = ({ title, icon, keyNam
         <StatCard
             title={title}
             icon={icon}
-            value={typeof databaseValue === 'number' ? databaseValue.toFixed(precision || 0) : `${databaseValue}`}
+            value={typeof databaseValue === 'number' ? databaseValue.toFixed(precision || 0) : `${databaseValue}`.split(" ").map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(" ")}
             precision={precision}
             suffix={suffix}
             changeText={changeText}

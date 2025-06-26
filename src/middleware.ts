@@ -61,6 +61,6 @@ export const config = {
      * 1. Arquivos estáticos (_next/static, _next/image, favicon.ico)
      * 2. Rotas da API (/api/)
      */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 };
